@@ -57,6 +57,11 @@ func NewFileFilter(basePath string, config FilterConfig) (*FileFilter, error) {
 	}, nil
 }
 
+// GetAbsFinalOutputFilePath returns the absolute path of the final output file.
+func (ff *FileFilter) GetAbsFinalOutputFilePath() string {
+	return ff.absFinalOutputFilePath
+}
+
 // IsExcluded checks if a file or directory should be excluded.
 // `activeGitIgnores` is a slice of gitignore.GitIgnore objects, ordered from root to most specific.
 // The path provided to this function should be absolute.

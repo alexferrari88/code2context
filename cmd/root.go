@@ -12,6 +12,22 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// processorInterface defines the methods we expect from a processor.
+type processorInterface interface {
+	Process() error
+	GetFinalOutputFile() string
+}
+
+// newProcessorFunc is a variable that holds the function to create a new processor.
+// It's initialized with a wrapper around processor.New, but can be replaced by a mock in tests.
+var newProcessorFunc func(cfg processor.Config) (processorInterface, error) = func(cfg processor.Config) (processorInterface, error) {
+	p, err := processor.New(cfg)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil // *processor.Processor implicitly satisfies processorInterface
+}
+
 var (
 	outputFile      string
 	gitRef          string
@@ -106,7 +122,7 @@ and allows for custom exclusion rules. An optional file tree can be included at 
 			DefaultAuxExts:                 appconfig.GetDefaultAuxFileExtensions(),
 		}
 
-		proc, err := processor.New(cfg)
+		proc, err := newProcessorFunc(cfg)
 		if err != nil {
 			return fmt.Errorf("failed to initialize processor: %w", err)
 		}

@@ -64,7 +64,7 @@ func (p *Processor) GetFinalOutputFile() string {
 func (p *Processor) setupInitialPaths() error {
 	if gitutils.IsGitURL(p.config.SourcePath) {
 		slog.Info("Input is a Git URL, attempting to clone.", "url", p.config.SourcePath)
-		clonedRepoPath, repoName, err := gitutils.CloneRepo(p.config.SourcePath, p.config.GitRef)
+		clonedRepoPath, repoName, err := gitutils.CloneRepoFunc(p.config.SourcePath, p.config.GitRef)
 		if err != nil {
 			return fmt.Errorf("processor: failed to clone repository: %w", err)
 		}

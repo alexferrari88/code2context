@@ -9,9 +9,10 @@ import (
 	"strings"
 )
 
-// CloneRepo clones a Git repository to a temporary directory.
+// CloneRepoFunc clones a Git repository to a temporary directory.
+// It's a variable to allow mocking in tests.
 // Returns the path to the cloned repo (inside a unique temp dir) and the repo name.
-func CloneRepo(repoURL, ref string) (string, string, error) {
+var CloneRepoFunc = func(repoURL, ref string) (string, string, error) {
 	// Create a unique parent temporary directory first
 	parentTempDir, err := os.MkdirTemp("", "c2c_clone_parent_*")
 	if err != nil {
@@ -96,11 +97,13 @@ func getRepoNameFromURL(repoURL string) string {
 	return "repository"
 }
 
-// IsGitURL checks if the input string looks like a git URL or SCP-like path.
+// IsGitURL checks if the input string looks like a git URL.
+// It's primarily used to distinguish remote repository URLs from local file paths.
 func IsGitURL(path string) bool {
 	return strings.HasPrefix(path, "http://") ||
 		strings.HasPrefix(path, "https://") ||
 		strings.HasPrefix(path, "git@") || // Covers git@github.com:user/repo.git
-		strings.HasPrefix(path, "ssh://") ||
-		strings.HasSuffix(path, ".git") // Covers file:///path/to/repo.git or local clones identified by .git
+		strings.HasPrefix(path, "ssh://")
+	// Removed: strings.HasSuffix(path, ".git") to avoid matching local paths like "myfolder.git" or SCP-like strings too broadly.
+	// If a local path happens to be a git repo and ends with .git, it will be treated as a local path, which is fine.
 }
