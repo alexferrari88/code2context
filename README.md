@@ -48,26 +48,27 @@ The tool intelligently processes a local folder or a public GitHub repository, i
 
 ### From Source
 
-1.  Clone the repository:
+1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/alexferrari88/code2context.git
-    cd code2context
-    ```
+   ```bash
+   git clone https://github.com/alexferrari88/code2context.git
+   cd code2context
+   ```
 
-2.  Build the executable:
+2. Build the executable:
 
-    ```bash
-    go build -o c2c ./main.go
-    ```
+   ```bash
+   go build -o c2c ./main.go
+   ```
 
-3.  (Optional) Move the `c2c` executable to a directory in your system's PATH, for example:
-    ```bash
-    sudo mv c2c /usr/local/bin/
-    # or for a local user path
-    # mkdir -p ~/bin && mv c2c ~/bin
-    # (ensure ~/bin is in your PATH)
-    ```
+3. (Optional) Move the `c2c` executable to a directory in your system's PATH, for example:
+
+   ```bash
+   sudo mv c2c /usr/local/bin/
+   # or for a local user path
+   # mkdir -p ~/bin && mv c2c ~/bin
+   # (ensure ~/bin is in your PATH)
+   ```
 
 ### Using `go install` (Recommended for Go users)
 
@@ -77,10 +78,56 @@ go install github.com/alexferrari88/code2context@latest
 
 This will download, compile, and install the `c2c` binary into your `$GOPATH/bin` or `$GOBIN` directory. Ensure this directory is in your system's PATH.
 
-<!--
-### Pre-compiled Binaries (Coming Soon!)
-Once releases are available, you can download pre-compiled binaries for your operating system from the [Releases page](https://github.com/alexferrari88/code2context/releases).
--->
+### Prebuilt Binaries
+
+Prebuilt executables for **macOS (x64/arm64)** and **Linux (x64)** are available on the [Releases page](https://github.com/alexferrari88/code2context/releases).
+
+> **Note:** Windows and Linux on ARM64 binaries are not yet provided. If you’re proficient with GitHub Actions and would like to help add these targets, please propose changes to the [release workflow](https://github.com/alexferrari88/code2context/blob/main/.github/workflows/release.yml) and open a pull request.
+
+### Adding to PATH
+
+Once you've downloaded the appropriate binary for your platform, add it to your system `PATH` so you can run `c2c` from any terminal.
+
+#### Linux and macOS
+
+1. Make the binary executable:
+
+   ```bash
+   chmod +x c2c
+   ```
+
+2. Move it to a directory in your PATH (for example `/usr/local/bin`):
+
+   ```bash
+   sudo mv c2c /usr/local/bin/
+   ```
+
+   Alternatively, for a user-local install:
+
+   ```bash
+   mkdir -p ~/bin
+   mv c2c ~/bin
+   # Ensure ~/bin is in your PATH (e.g., add `export PATH="$HOME/bin:$PATH"` to your shell profile)
+   ```
+
+#### Windows
+
+1. Rename the downloaded executable to `c2c.exe` (if necessary).
+
+2. Move it to a permanent directory, for example `C:\tools\c2c`, and then add that directory to your system `PATH`:
+
+   * Open **System Properties** > **Advanced** > **Environment Variables**.
+   * Under **User variables** or **System variables**, select `Path` and click **Edit**.
+   * Click **New**, then enter `C:\tools\c2c` (or your chosen folder).
+   * Click **OK** to apply.
+
+   Or, in PowerShell (as administrator):
+
+   ```powershell
+   setx PATH $env:PATH + ";C:\tools\c2c"
+   ```
+
+After that, you can run `c2c` from any terminal.
 
 ## Usage
 
